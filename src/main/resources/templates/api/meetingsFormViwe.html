@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Title</title>
+</head>
+<body>
+
+<form class="d-flex" th:action="@{/ext/meetings-search}" method="get">
+    <input class="form-control me-2" aria-label="Search" type="text" placeholder="Search..." th:name="search"/>
+    <select th:name="period">
+        <option value="1">Future Meetings</option>
+        <option value="2">Current and future Meetings</option>
+        <option value="3" selected>All Meetings</option>
+    </select>
+    <button class="btn btn-outline-success" type="submit" value="Search">Search</button>
+</form>
+<div class="album py-auto bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-12 g-9">
+            <div th:each="meeting : ${meetings}">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="https://placeimg.com/480/320/tech" alt="First slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="https://placeimg.com/480/320/people" alt="Second slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="https://placeimg.com/480/320/nature/grayscale" alt="Third slide">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="container">
+                                    <div class="row justify-content-between">
+                                        <div class="col-5"><a>Start date: <span th:text="${meeting.sinceDate}"></span></a></div>
+<!--                                        why doesn't wor th:text="${#temporals.format(meeting.sinceDate, 'yyyy-MM-dd')}"  ????  -->
+                                        <div class="col-5"><a>End date: <span th:text="${meeting.toDate}"></span></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-md-center">
+                                <div class="col-md-auto">
+                                    <p class="lead text-muted text-decoration-none text-muted"><a class="text-muted text-decoration-none text-muted" th:href="@{http://localhost:9999/meeting/{meetingId}(meetingId=${meeting.id})}" th:text="${meeting.title}"></a></p>
+                                </div>
+                            </div>
+                            <p class="card-text" th:text="${#strings.abbreviate(meeting.body, 53)}"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                </div>
+                                <small class="text-muted">Owner</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+</body>
+</html>
