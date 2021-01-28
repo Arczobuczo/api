@@ -1,12 +1,11 @@
 package com.sda.demo.controller;
 
 import com.sda.demo.Dtos.MeetingShortInfoDto;
+import com.sda.demo.config.RestService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -14,10 +13,10 @@ import java.util.List;
 @Controller
 @RequestMapping("ext")
 public class MeetingsSearchExternalController {
-    private final RestTemplate restTemplate;
+    private final RestService restService;
 
-    public MeetingsSearchExternalController(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    public MeetingsSearchExternalController(RestService restService) {
+        this.restService = restService;
     }
 
 
@@ -29,7 +28,7 @@ public class MeetingsSearchExternalController {
 
         String url = String.format("http://localhost:9999/api/meetings?search=%s&period=%s", search, period);
 
-        List<MeetingShortInfoDto> meetings = restTemplate.getForObject(url, List.class);
+        List<MeetingShortInfoDto> meetings = restService.getForObject(url, List.class);
         log.info("Meetings {}", meetings);
 
         model.addAttribute("meetings", meetings);
